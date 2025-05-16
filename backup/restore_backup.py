@@ -20,13 +20,13 @@ def restore_db(app):
 
         # connect to database template1
         engine = create_engine('postgresql+psycopg2://{}:{}@localhost/template1'.format(SQL_USER, SQL_PASSWORD))
-        print(engine)
+
         # terminate database sessions
         q = text("SELECT pg_terminate_backend(pg_stat_activity.pid)\
         FROM pg_stat_activity\
         WHERE pg_stat_activity.datname = '{}'\
         AND pid <> pg_backend_pid();".format(SQL_DB))
-        print(q)
+
         engine.execute(q)
         print("\033[32m\033[1m" + "Database sessions have been terminated" + "\033[0m")
 
@@ -54,11 +54,15 @@ def update_files_location(app):
         S3_CONTAINER = app.config.get('S3_CONTAINER')
         now = datetime.now()
 
-        q = text("update files_location set updated='{}', uri='s3://{}' where name='default-location';".format(now, S3_CONTAINER))
+        # reset all locations to default false
+        q = text("update files_location set \"default\"=false;")
+        db.engine.execute(q)
+
+        q = text("update files_location set updated='{}', uri='s3://{}', \"default\"=true where name='s3';".format(now, S3_CONTAINER))
         db.engine.execute(q)
 
         # check update was successful
-        q = text("select count(*) from files_location where uri='s3://{}' and name='default-location';".format(S3_CONTAINER))
+        q = text("select count(*) from files_location where uri='s3://{}' and name='s3';".format(S3_CONTAINER))
         results = db.engine.execute(q)
         if results.fetchall()[0][0] == 1:
             print("\033[32m\033[1m" + "Files location has been updated to {}".format(S3_CONTAINER) + "\033[0m")
