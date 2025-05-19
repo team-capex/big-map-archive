@@ -225,7 +225,7 @@ def test_create_draft_references(token_com1_reader, minimal_record):
     # valid reference
     record["metadata"]["related_identifiers"] = [
         {
-            "identifier": "https://archive.big-map.eu/",
+            "identifier": "https://archive-capex.energy.dtu.dk/",
             "scheme": "url",
             "relation_type": {
                 "id": "references",

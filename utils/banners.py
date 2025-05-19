@@ -101,7 +101,7 @@ if __name__ == "__main__":
                 <i aria-hidden="true" class="warning sign icon"></i>\
                 This is a demo site where you can explore and test the archive\'s functionalities of the next release.<br>\
                 It is only for testing and data will be deleted at any time. Do NOT store here confidential data or information.<br>\
-                If you are a member of the BIG-MAP project you can use the <a href="https://archive.big-map.eu/" style="text-decoration: underline;" target="_blank">main archive</a> for storing and sharing research data.\
+                If you are a member of the BIG-MAP project you can use the <a href="https://archive-capex.energy.dtu.dk/" style="text-decoration: underline;" target="_blank">main archive</a> for storing and sharing research data.\
             </p>\
             </div>\
         '

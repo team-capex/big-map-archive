@@ -2,7 +2,7 @@
 
 ## Main archive
 
-The [BIG-MAP Archive](https://archive.big-map.eu/) is fully online and waiting for your submissions!
+The [BIG-MAP Archive](https://archive-capex.energy.dtu.dk/) is fully online and waiting for your submissions!
 
 It is a research data repository to enable data sharing within the BIG-MAP community.
 
@@ -12,9 +12,9 @@ The focus is on data, raw and/or processed, that you already curated and want to
 
 ## Demo archive and tutorial
 
-In addition to the main production archive (with daily backups), a [demo archive](https://archive-demo.big-map.eu/) is available so that you can practice creating and managing records via the graphical user interface (GUI) and the application programming interface (API).
+In addition to the main production archive (with daily backups), a [demo archive](https://archive-demo-capex.energy.dtu.dk/) is available so that you can practice creating and managing records via the graphical user interface (GUI) and the application programming interface (API).
 
-A [tutorial](https://archive.big-map.eu/help/tutorial) walks you through the very basic steps to help you getting started. Please experiment on the demo archive, as you are not allowed to delete shared records on the main archive.
+A [tutorial](https://archive-capex.energy.dtu.dk/help/tutorial) walks you through the very basic steps to help you getting started. Please experiment on the demo archive, as you are not allowed to delete shared records on the main archive.
 
 ## User accounts
 
@@ -24,7 +24,7 @@ Prior to your first login to an archive, you should reset your password, as expl
 
 ## Support
 
-If you have any comments or questions, please send your emails to big-map-archive@materialscloud.org.
+If you have any comments or questions, please send your emails to big-map@dtu.dk.
 
 ## Issues
 
