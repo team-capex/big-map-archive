@@ -29,12 +29,10 @@ from dateutil.relativedelta import *
 def get_s3_client():
     session = boto3.session.Session()
     s3_client = session.client(
-        service_name=app.config.get('S3_SIGNATURE_VERSION'),
+        service_name='s3',
         aws_access_key_id=app.config.get('S3_ACCESS_KEY_ID'),
         aws_secret_access_key=app.config.get('S3_SECRET_ACCESS_KEY'),
-        #aws_session_token=...,  # only used for temporary keys
         endpoint_url=app.config.get('S3_ENDPOINT_URL'),
-        region_name='Castor',  # seems optional
         config=botocore.client.Config(s3={'addressing_style': 'virtual'}), # for botocore v1.34.0
     )
     return s3_client
@@ -43,12 +41,10 @@ def get_s3_client():
 def get_s3_client_with_sig_version():
     session = boto3.session.Session()
     s3_client = session.client(
-        service_name=app.config.get('S3_SIGNATURE_VERSION'),
+        service_name='s3',
         aws_access_key_id=app.config.get('S3_ACCESS_KEY_ID'),
         aws_secret_access_key=app.config.get('S3_SECRET_ACCESS_KEY'),
-        #aws_session_token=...,  # only used for temporary keys
         endpoint_url=app.config.get('S3_ENDPOINT_URL'),
-        region_name='Castor',  # seems optional
         config=botocore.client.Config(signature_version=app.config.get('S3_SIGNATURE_VERSION')),
     )
     return s3_client
@@ -238,14 +234,14 @@ if __name__ == '__main__':
     print("Copying dump on Object Store ...")
     copy_dump(app, today)
     print("Latest dump copied on Object Store")
-    print("Deleting old dumps from Object Store ...")
-    delete_dump("dump/big_map_archive_dump_", ".bak")
-    print("Old dumps deleted from Object Store")
+    #print("Deleting old dumps from Object Store ...")
+    #delete_dump("dump/big_map_archive_dump_", ".bak")
+    #print("Old dumps deleted from Object Store")
 
     # indexes
     print("Copying indexes backup to Object Store ...")
     copy_indexes_dump(app, today)
     print("Latest indexes backup copied to Object Store")
-    print("Deleting old indexes backup from Object Store ...")
-    delete_dump("dump/big_map_archive_dump_indexes_", ".tar.gz")
-    print("Old indexes backup deleted from Object Store")
+    #print("Deleting old indexes backup from Object Store ...")
+    #delete_dump("dump/big_map_archive_dump_indexes_", ".tar.gz")
+    #print("Old indexes backup deleted from Object Store")
