@@ -10,9 +10,10 @@
 from datetime import datetime
 
 import click
-from flask import current_app
+from flask import current_app, url_for
 from flask.cli import with_appcontext
 from flask_security.confirmable import confirm_user
+from flask_security.recoverable import send_reset_password_instructions, generate_reset_password_token
 from invenio_access.permissions import system_identity
 from invenio_accounts.models import User
 from invenio_accounts.proxies import current_datastore
@@ -819,3 +820,51 @@ def confirm_user_cli(user_email):
     db.session.commit()
     # reindex_user([user.id])
     click.secho(f'SUCCESS: User email {user_email} has been confirmed.', fg="green")
+
+
+# invite user
+@users.command("invite")  # <— registers under: invenio bmarchive users invite
+@click.argument("email")
+@click.option("--active/--inactive", default=True, help="Set user active state.")
+@click.option("--no-email", is_flag=True, help="Do not send email; print a reset URL instead.")
+@click.option("--force", is_flag=True, help="If user exists, still send/reset invitation.")
+@with_appcontext
+def invite(email, active, no_email, force):
+    """Create (if needed) a user and send a set-password invitation."""
+    try:
+        db.session.rollback()  # clear any failed transaction
+
+        user = current_datastore.find_user(email=email)
+        created = False
+
+        if not user:
+            user = current_datastore.create_user(email=email, active=active)
+            current_datastore.commit()
+            created = True
+            click.echo(f"Created user {email}.")
+        else:
+            if user.active != active:
+                user.active = active
+                current_datastore.commit()
+
+            if not force and not no_email:
+                click.echo(f"User {email} already exists. Use --force to re-send the invite.")
+                return
+
+        if no_email:
+            token = generate_reset_password_token(user)
+            try:
+                reset_url = url_for("security.reset_password", token=token, _external=True)
+            except RuntimeError:
+                scheme = current_app.config.get("PREFERRED_URL_SCHEME", "https")
+                server = current_app.config.get("SERVER_NAME", "localhost")
+                root = (current_app.config.get("APPLICATION_ROOT") or "").rstrip("/")
+                reset_url = f"{scheme}://{server}{root}/account/reset/{token}"
+            click.echo(f"Reset URL: {reset_url}")
+        else:
+            send_reset_password_instructions(user)
+            click.echo(f"Invitation sent to {email}.")
+
+    except Exception as e:
+        db.session.rollback()
+        raise click.ClickException(str(e))
