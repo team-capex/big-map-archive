@@ -15,8 +15,8 @@ services:
       - "INVENIO_CELERY_BROKER_URL=amqp://guest:guest@mq:5672/"
       - "INVENIO_CELERY_RESULT_BACKEND=redis://cache:6379/2"
       - "INVENIO_SEARCH_HOSTS=['search:9200']"
-      - "INVENIO_SECRET_KEY=CHANGE_ME"
-      - "INVENIO_SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://big-map-archive:big-map-archive@db/big-map-archive"
+      - "INVENIO_SECRET_KEY=${INVENIO_SECRET_KEY}"
+      - "INVENIO_SQLALCHEMY_DATABASE_URI=${INVENIO_SQLALCHEMY_DATABASE_URI}"
       - "INVENIO_WSGI_PROXIES=2"
       - "INVENIO_RATELIMIT_STORAGE_URL=redis://cache:6379/3"
   frontend:
@@ -37,7 +37,7 @@ services:
     restart: "unless-stopped"
     environment:
       - "POSTGRES_USER=big-map-archive"
-      - "POSTGRES_PASSWORD=big-map-archive"
+      - "POSTGRES_PASSWORD=${INVENIO_SQL_PASSWORD}"
       - "POSTGRES_DB=big-map-archive"
     ports:
       - "5432:5432"
