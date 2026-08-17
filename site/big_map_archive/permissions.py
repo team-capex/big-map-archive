@@ -5,7 +5,7 @@
 # BIG MAP Archive is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
-"""Permissions for BIG-MAP Archive Records."""
+"""Permissions for CAPeX Archive Records."""
 from invenio_communities.generators import (CommunityMembers,
                                             IfCommunityDeleted, IfPolicyClosed)
 from invenio_communities.generators import \
