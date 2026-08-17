@@ -118,3 +118,16 @@
     description: Battery Cell Assembly Twin (BatCAT)
     website: http://batcat.info/
     organizations: [{"name": "BatCAT"}]
+- access:
+    visibility: restricted
+    member_policy: closed
+    record_policy: open
+    review_policy: open
+  slug: materialscommons
+  logo: ./static/images/MatCommons.png
+  metadata:
+    title: Materials Commons
+    description: Enhance materials research in EU by establishing a federated digital infrastructure that seamlessly connects researchers from both industry and academia
+    website: https://www.materialscommons.eu/
+    organizations: [{"name": "Materials Commons"}]
+    
