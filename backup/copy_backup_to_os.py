@@ -145,7 +145,7 @@ def delete_dump(object_path_prefix, object_path_format):
     @param object_path_format: file extension, different for database dump and indexes dump
     """
 
-    s3_client = get_s3_client()
+    s3_client = get_s3_client_with_sig_version()
     dump_times = []
 
     # date of today
@@ -170,7 +170,7 @@ def delete_dump(object_path_prefix, object_path_format):
         for page in response_iterator:
             for key in page['Contents']:
                 if "dump/" in key['Key'] and key['Key'] != "dump/":
-                    if object_path_prefix in key['Key']:
+                    if object_path_prefix in key['Key'] and object_path_format in key['Key']:
                         dump_date = key['Key'].replace(object_path_prefix, "").replace(object_path_format, "")
                         try:
                             dump_date = datetime.datetime.strptime(dump_date, '%Y-%m-%d').date()
@@ -234,14 +234,21 @@ if __name__ == '__main__':
     print("Copying dump on Object Store ...")
     copy_dump(app, today)
     print("Latest dump copied on Object Store")
-    print("Deleting old dumps from Object Store ...")
-    delete_dump("dump/big_map_archive_dump_", ".bak")
-    print("Old dumps deleted from Object Store")
 
     # indexes
     print("Copying indexes backup to Object Store ...")
     copy_indexes_dump(app, today)
     print("Latest indexes backup copied to Object Store")
+
+    # Deleting old backups
+    
+    # database
+    print("Deleting old dumps from Object Store ...")
+    delete_dump("dump/big_map_archive_dump_", ".bak")
+    print("Old dumps deleted from Object Store")
+
+
+    # indexes
     print("Deleting old indexes backup from Object Store ...")
     delete_dump("dump/big_map_archive_dump_indexes_", ".tar.gz")
     print("Old indexes backup deleted from Object Store")
